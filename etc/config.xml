@@ -3,7 +3,7 @@
     <default>
         <sso_integration>
             <general>
-                <active>1</active>
+                <active>0</active>
             </general>
         </sso_integration>
     </default>

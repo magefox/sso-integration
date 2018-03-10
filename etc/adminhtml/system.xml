@@ -11,9 +11,35 @@
             <resource>Magefox_SSOIntegration::configurations</resource>
             <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
                 <label>General Configuration</label>
-                <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Enabled for Checkout</label>
+                <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable Single Sign On</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="provider" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Provider</label>
+                    <source_model>Magefox\SSOIntegration\Model\Config\Source\Provider</source_model>
+                </field>
+                <field id="auth0_account" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Account</label>
+                    <validate>required-entry</validate>
+                    <comment>Auth0 Account. eg. the account for this domain: gloong.auth0.com is gloong</comment>
+                    <depends>
+                        <field id="provider">auth0</field>
+                    </depends>
+                </field>
+                <field id="auth0_client_id" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Client ID</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="provider">auth0</field>
+                    </depends>
+                </field>
+                <field id="auth0_client_secret" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Client Secret</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="provider">auth0</field>
+                    </depends>
                 </field>
             </group>
         </section>
