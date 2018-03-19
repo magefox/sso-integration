@@ -12,6 +12,7 @@ $auth0 = $block->getAuth0();
                 '<?= $auth0->getClientId()?>',
                 '<?= $auth0->getDomain()?>',
                 {
+                    allowLogin: false,
                     auth: {
                         redirectUrl: '<?= $auth0->getCallbackUrl()?>',
                         responseType: 'code',
@@ -21,10 +22,7 @@ $auth0 = $block->getAuth0();
                     }
                 });
 
-            $('li.authorization-link > a, ul.header.links > li > a').click(function(e) {
-                e.preventDefault();
-                lock.show();
-            });
+            lock.show();
         });
     });
 </script>
