@@ -1,12 +1,15 @@
 <?php
 namespace Magefox\SSOIntegration\Model;
 
+use Magento\Framework\HTTP\Client\Curl;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\UrlInterface;
 use Magento\Framework\Encryption\EncryptorInterface;
 
 class Auth0
 {
+    protected $curl;
+
     /**
      * @var ScopeConfigInterface
      * */
@@ -38,10 +41,12 @@ class Auth0
     protected $clientSecret;
 
     public function __construct(
+        Curl $curl,
         ScopeConfigInterface $scopeConfig,
         EncryptorInterface $encryptor,
         UrlInterface $urlBuilder
     ) {
+        $this->curl = $curl;
         $this->scopeConfig = $scopeConfig;
         $this->encryptor = $encryptor;
         $this->urlBuilder = $urlBuilder;
@@ -94,5 +99,31 @@ class Auth0
      */
     public function getCallbackUrl() {
         return $this->urlBuilder->getUrl('sso/auth0/callback');
+    }
+
+    public function getAccessToken($code) {
+        $url = "https://$this->domain/oauth/token";
+
+        $this->curl->post($url,
+            [
+                'client_id'     => $this->getClientId(),
+                'client_secret' => $this->getClientSecret(),
+                'code'          => $code,
+                'grant_type'    => 'authorization_code'
+            ]
+        );
+
+        $response = json_decode($this->curl->getBody());
+
+        var_dump($response);die();
+    }
+
+    public function getUserInfo($accessToken) {
+        $url = "https://$this->domain/userinfo/?access_token=$accessToken";
+
+        $this->curl->get($url);
+        $response = json_decode($this->curl->getBody());
+
+        var_dump($response);die();
     }
 }
