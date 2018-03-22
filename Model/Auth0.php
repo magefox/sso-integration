@@ -102,12 +102,14 @@ class Auth0
     }
 
     public function getAccessToken($code) {
-        $url = "https://$this->domain/oauth/token";
+        $domain = $this->getDomain();
+        $url = "https://$domain/oauth/token";
 
         $this->curl->post($url,
             [
                 'client_id'     => $this->getClientId(),
                 'client_secret' => $this->getClientSecret(),
+                'redirect_uri'  => $this->getCallbackUrl(),
                 'code'          => $code,
                 'grant_type'    => 'authorization_code'
             ]
@@ -119,7 +121,8 @@ class Auth0
     }
 
     public function getUserInfo($accessToken) {
-        $url = "https://$this->domain/userinfo/?access_token=$accessToken";
+        $domain = $this->getDomain();
+        $url = "https://$domain/userinfo/?access_token=$accessToken";
 
         $this->curl->get($url);
         $response = json_decode($this->curl->getBody());

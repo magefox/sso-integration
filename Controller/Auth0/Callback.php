@@ -27,6 +27,6 @@ class Callback extends \Magento\Framework\App\Action\Action
         $auth0 = $this->auth0Factory
             ->create();
 
-        $user = $auth0->getUserInfo();
+        $user = $auth0->getAccessToken($this->getRequest()->getParam('code'));
     }
 }
