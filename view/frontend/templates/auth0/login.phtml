@@ -12,10 +12,10 @@ $auth0 = $block->getAuth0();
                 '<?= $auth0->getClientId()?>',
                 '<?= $auth0->getDomain()?>',
                 {
-                    allowSignUp: false,
                     auth: {
                         redirectUrl: '<?= $auth0->getCallbackUrl()?>',
                         responseType: 'code',
+                        state: '<?= $block->getFormKey() ?>',
                         params: {
                             scope: 'openid email' // Learn about scopes: https://auth0.com/docs/scopes
                         }
