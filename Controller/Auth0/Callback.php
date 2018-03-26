@@ -128,7 +128,7 @@ class Callback extends \Magento\Framework\App\Action\Action
             $this->_redirect('/');
             return;
         } else {
-            $this->messageManager->addErrorMessage(__('Invalid form key.'));
+            $this->messageManager->addErrorMessage(__('Invalid form key, please try again.'));
             $this->_redirect('/');
             return;
         }
