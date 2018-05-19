@@ -1,0 +1,19 @@
+<?php
+// @codingStandardsIgnoreFile
+/**
+ * @var \Magefox\SSOIntegration\Block\Account\AuthorizationLink $block
+ */
+?>
+<li class="authorization-link" data-bind="scope: 'shipping-time'"
+    data-mage-init='{
+        "MagefoxAuth0": {
+            "clientId": "<?= $block->getAuth0()->getClientId()?>",
+            "domain": "<?= $block->getAuth0()->getDomain()?>",
+            "redirectUrl": "<?= $block->getAuth0()->getCallbackUrl()?>"
+        }
+    }'
+>
+    <a <?= /* @noEscape */ $block->getLinkAttributes() ?>>
+        <?= $block->escapeHtml($block->getLabel()) ?>
+    </a>
+</li>
