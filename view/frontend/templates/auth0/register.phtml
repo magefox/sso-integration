@@ -1,0 +1,28 @@
+<?php
+/**
+ * @var $block \Magefox\SSOIntegration\Block\Auth0
+ */
+$auth0 = $block->getAuth0();
+?>
+<script type="text/javascript">
+    'use strict';
+    require(['jquery'], function($){
+        $(function(){
+            var lock = new Auth0Lock(
+                '<?= $auth0->getClientId()?>',
+                '<?= $auth0->getDomain()?>',
+                {
+                    allowLogin: false,
+                    auth: {
+                        redirectUrl: '<?= $auth0->getCallbackUrl()?>',
+                        responseType: 'code',
+                        params: {
+                            scope: 'openid email' // Learn about scopes: https://auth0.com/docs/scopes
+                        }
+                    }
+                });
+
+            lock.show();
+        });
+    });
+</script>
