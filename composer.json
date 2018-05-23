@@ -8,8 +8,7 @@
     "AFL-3.0"
   ],
   "require": {
-    "magento/module-customer": "*",
-    "auth0/auth0-php": "^5.1"
+    "magento/module-customer": "*"
   },
   "autoload": {
     "files": [ "registration.php" ],

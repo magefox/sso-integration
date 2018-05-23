@@ -1,14 +1,20 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceBlock name="top.links">
-            <block ifconfig="sso_integration/general/active" class="Magento\Customer\Block\Account\RegisterLink" name="register-link">
-                <arguments>
-                    <argument name="label" xsi:type="string" translate="true">Create an Account</argument>
-                </arguments>
-            </block>
-            <block ifconfig="sso_integration/general/active" class="Magento\Customer\Block\Account\AuthorizationLink" name="authorization-link" template="Magefox_SSOIntegration::account/link/authorization.phtml"/>
+        <referenceBlock name="authorization-link-login">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Magefox_SSOIntegration::account/link/authorization.phtml</argument>
+            </action>
         </referenceBlock>
+
+        <!--<referenceBlock name="top.links">-->
+            <!--<block ifconfig="sso_integration/general/active" class="Magento\Customer\Block\Account\RegisterLink" name="register-link">-->
+                <!--<arguments>-->
+                    <!--<argument name="label" xsi:type="string" translate="true">Create an Account</argument>-->
+                <!--</arguments>-->
+            <!--</block>-->
+            <!--<block ifconfig="sso_integration/general/active" class="Magento\Customer\Block\Account\AuthorizationLink" name="authorization-link" template="Magefox_SSOIntegration::account/link/authorization.phtml"/>-->
+        <!--</referenceBlock>-->
         <!--<referenceBlock name="before.body.end">-->
             <!--<block ifconfig="sso_integration/general/active" class="Magefox\SSOIntegration\Block\Auth0" name="sso_integration.auth0" template="Magefox_SSOIntegration::auth0.phtml" after="-"/>-->
         <!--</referenceBlock>-->

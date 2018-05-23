@@ -28,10 +28,10 @@ define([
                 })
             ;
 
-            $(this.element).find('.authorization-link').click(function (e) {
+            $(this.element).find('a').click(function (e) {
                 e.preventDefault();
-                lock.show();
-            });
+                this.lock.show();
+            }.bind(this));
         }
     });
 
