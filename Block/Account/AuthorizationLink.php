@@ -1,6 +1,12 @@
 <?php
 namespace Magefox\SSOIntegration\Block\Account;
 
+/**
+ * Class AuthorizationLink
+ * @package Magefox\SSOIntegration\Block\Account
+ * @method setSection(string $section)
+ * @method string getSection()
+ */
 class AuthorizationLink extends \Magento\Customer\Block\Account\AuthorizationLink
 {
     /**

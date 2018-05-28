@@ -1,12 +1,12 @@
 define([
-    "jquery",
-    'Magefox_SSOIntegration/js/libs/auth0-lock.min',
+    'jquery',
+    'Auth0Lock',
     'jquery/ui',
     'mage/translate'
 ], function($, Auth0Lock) {
     "use strict";
 
-    $.widget('MagefoxAuth0', {
+    $.widget('magefox.auth0', {
         options: {
             "clientId": '',
             "domain": '',
@@ -35,5 +35,5 @@ define([
         }
     });
 
-    return $.MagefoxAuth0;
+    return $.magefox.auth0;
 });

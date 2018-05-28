@@ -3,7 +3,10 @@
     <body>
         <referenceBlock name="authorization-link-login">
             <action method="setTemplate">
-                <argument name="template" xsi:type="string">Magefox_SSOIntegration::account/link/authorization.phtml</argument>
+                <argument name="template" xsi:type="helper" helper="Magefox\SSOIntegration\Helper\View::getAuthorizationLinkTemplate" />
+            </action>
+            <action method="setSection">
+                <argument name="section" xsi:type="string">login</argument>
             </action>
         </referenceBlock>
 

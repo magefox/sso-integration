@@ -1,15 +1,16 @@
 <?php
 // @codingStandardsIgnoreFile
 /**
- * @var \Magefox\SSOIntegration\Block\Account\AuthorizationLink $block
+ * @var $block \Magefox\SSOIntegration\Block\Account\AuthorizationLink
  */
 ?>
 <li class="authorization-link"
     data-mage-init='{
-        "MagefoxAuth0": {
+        "magefox.auth0": {
             "clientId": "<?= $block->getAuth0()->getClientId()?>",
             "domain": "<?= $block->getAuth0()->getDomain()?>",
-            "redirectUrl": "<?= $block->getAuth0()->getCallbackUrl()?>"
+            "redirectUrl": "<?= $block->getAuth0()->getCallbackUrl()?>",
+            "section": "<?= $block->getSection()?>"
         }
     }'
 >
