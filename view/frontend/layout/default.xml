@@ -5,9 +5,6 @@
             <action method="setTemplate">
                 <argument name="template" xsi:type="helper" helper="Magefox\SSOIntegration\Helper\View::getAuthorizationLinkTemplate" />
             </action>
-            <action method="setSection">
-                <argument name="section" xsi:type="string">login</argument>
-            </action>
         </referenceBlock>
 
         <!--<referenceBlock name="top.links">-->

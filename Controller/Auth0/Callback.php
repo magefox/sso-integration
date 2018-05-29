@@ -3,7 +3,7 @@ namespace Magefox\SSOIntegration\Controller\Auth0;
 
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\Data\Form\FormKey\Validator;
-use Magefox\SSOIntegration\Model\Auth0Factory;
+use Magefox\SSOIntegration\Model\Auth0;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Customer\Model\CustomerExtractor;
 use Magento\Customer\Api\AccountManagementInterface;
@@ -17,9 +17,9 @@ class Callback extends \Magento\Framework\App\Action\Action
     protected $formValidator;
 
     /**
-     * @var Auth0Factory
+     * @var Auth0
      */
-    protected $auth0Factory;
+    protected $auth0;
 
     protected $customerFactory;
 
@@ -41,13 +41,13 @@ class Callback extends \Magento\Framework\App\Action\Action
     public function __construct(
         Context $context,
         Validator $formValidator,
-        Auth0Factory $auth0Factory,
+        Auth0 $auth0,
         CustomerFactory $customerFactory,
         CustomerExtractor $customerExtractor,
         AccountManagementInterface $accountManagement,
         Session $customerSession
     ) {
-        $this->auth0Factory = $auth0Factory;
+        $this->auth0 = $auth0;
         $this->customerFactory = $customerFactory;
         $this->formValidator = $formValidator;
         $this->customerExtractor = $customerExtractor;
@@ -74,20 +74,14 @@ class Callback extends \Magento\Framework\App\Action\Action
          * Validate form key
          */
         if ($this->formValidator->validate($this->getRequest())) {
-            /**
-             * @var $auth0 \Magefox\SSOIntegration\Model\Auth0
-             */
-            $auth0 = $this->auth0Factory
-                ->create();
-
-            $token = $auth0->getToken($this->getRequest()->getParam('code'));
+            $token = $this->auth0->getToken($this->getRequest()->getParam('code'));
             if(isset($token['error'])) {
                 $this->messageManager->addErrorMessage($token['error_description']);
                 $this->_redirect('/');
                 return;
             }
 
-            $user = $auth0->getUserInfo($token['access_token']);
+            $user = $this->auth0->getUserInfo($token['access_token']);
             if(isset($user['error'])) {
                 $this->messageManager->addErrorMessage($user['error_description']);
                 $this->_redirect('/');

@@ -1,6 +1,6 @@
 define([
     'jquery',
-    'Auth0Lock',
+    'auth0Lock',
     'jquery/ui',
     'mage/translate'
 ], function($, Auth0Lock) {
@@ -10,6 +10,7 @@ define([
         options: {
             "clientId": '',
             "domain": '',
+            "state": '',
             "redirectUrl": ''
         },
 
@@ -21,8 +22,9 @@ define([
                     auth: {
                         redirectUrl: this.options.redirectUrl,
                         responseType: 'code',
+                        state: this.options.state,
                         params: {
-                            scope: 'openid email' // Learn about scopes: https://auth0.com/docs/scopes
+                            scope: 'openid profile email' // Learn about scopes: https://auth0.com/docs/scopes
                         }
                     }
                 })

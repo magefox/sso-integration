@@ -1,10 +1,10 @@
 var config = {
     paths: {
-        'Auth0Lock': 'Magefox_SSOIntegration/js/libs/auth0-lock.min'
+        'auth0Lock': 'Magefox_SSOIntegration/js/libs/auth0-lock.min'
     },
     shim: {
-        'Auth0Lock': {
-            "exports": "Auth0Lock"
+        'auth0Lock': {
+            "exports": "auth0Lock"
         }
     },
     map: {
