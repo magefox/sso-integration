@@ -8,6 +8,7 @@ use Magento\Customer\Model\CustomerFactory;
 use Magento\Customer\Model\CustomerExtractor;
 use Magento\Customer\Api\AccountManagementInterface;
 use Magento\Customer\Model\Session;
+use Firebase\JWT\JWT;
 
 class Callback extends \Magento\Framework\App\Action\Action
 {
@@ -74,53 +75,56 @@ class Callback extends \Magento\Framework\App\Action\Action
          * Validate form key
          */
         if ($this->formValidator->validate($this->getRequest())) {
-            $token = $this->auth0->getToken($this->getRequest()->getParam('code'));
-            if(isset($token['error'])) {
-                $this->messageManager->addErrorMessage($token['error_description']);
+            try {
+                $token = $this->auth0->getToken($this->getRequest()->getParam('code'));
+                if (isset($token['access_token']) || isset($token['id_token'])) {
+                    $decodedToken = JWT::decode(
+                        $token['id_token'],
+                        $this->auth0->getJWTKey(),
+                        Auth0::ALGORITHM
+                    );
+
+                    $user = $this->auth0->getUserInfo($token['access_token']);
+
+                    $customer = $this->customerFactory
+                        ->create()
+                        ->loadByEmail($user['email']);
+
+                    /**
+                     * Customer register
+                     */
+                    if (!$customer->getId()) {
+                        $customer = $this->customerExtractor->extract('customer_account_create', $this->getRequest());
+
+                        $customer = $this->accountManagement
+                            ->createAccount($customer, '', '');
+
+                        $this->_eventManager->dispatch(
+                            'customer_register_success',
+                            ['account_controller' => $this, 'customer' => $customer]
+                        );
+                    }
+
+                    /**
+                     * Process login
+                     */
+                    if (!$user['email_verified']) {
+                        $this->messageManager->addWarningMessage(__('You must confirm your account. Please check your email for the confirmation link.'));
+                        $this->_redirect('/');
+                        return;
+                    } else {
+                        $this->customerSession->loginById($customer->getId());
+                    }
+                }
+
+                $this->messageManager->addSuccessMessage(__('Login successful.'));
+                $this->_redirect('/');
+                return;
+            } catch (\Exception $e) {
+                $this->messageManager->addErrorMessage($e->getMessage());
                 $this->_redirect('/');
                 return;
             }
-
-            $user = $this->auth0->getUserInfo($token['access_token']);
-            if(isset($user['error'])) {
-                $this->messageManager->addErrorMessage($user['error_description']);
-                $this->_redirect('/');
-                return;
-            }
-
-            $customer = $this->customerFactory
-                ->create()
-                ->loadByEmail($user['email']);
-
-            /**
-             * Customer register
-             */
-            if(!$customer->getId()) {
-                $customer = $this->customerExtractor->extract('customer_account_create', $this->getRequest());
-
-                $customer = $this->accountManagement
-                    ->createAccount($customer, '', '');
-
-                $this->_eventManager->dispatch(
-                    'customer_register_success',
-                    ['account_controller' => $this, 'customer' => $customer]
-                );
-            }
-
-            /**
-             * Process login
-             */
-            if (!$user['email_verified']) {
-                $this->messageManager->addWarningMessage(__('You must confirm your account. Please check your email for the confirmation link.'));
-                $this->_redirect('/');
-                return;
-            } else {
-                $this->customerSession->loginById($customer->getId());
-            }
-
-            $this->messageManager->addSuccessMessage(__('Login successful.'));
-            $this->_redirect('/');
-            return;
         } else {
             $this->messageManager->addErrorMessage(__('Invalid form key, please try again.'));
             $this->_redirect('/');

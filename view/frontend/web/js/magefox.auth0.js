@@ -22,9 +22,10 @@ define([
                     auth: {
                         redirectUrl: this.options.redirectUrl,
                         responseType: 'code',
-                        state: this.options.state,
                         params: {
-                            scope: 'openid profile email' // Learn about scopes: https://auth0.com/docs/scopes
+                            state: this.options.state,
+                            scope: 'openid' // Learn about scopes: https://auth0.com/docs/scopes
+                            // scope: 'openid profile email' // Learn about scopes: https://auth0.com/docs/scopes
                         }
                     }
                 })
