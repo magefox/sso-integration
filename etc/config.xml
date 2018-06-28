@@ -4,6 +4,8 @@
         <sso_integration>
             <general>
                 <active>0</active>
+                <auth0_client_secret_base64_encoded>0</auth0_client_secret_base64_encoded>
+                <auth0_client_signing_algorithm>RS256</auth0_client_signing_algorithm>
             </general>
         </sso_integration>
     </default>

@@ -2,16 +2,22 @@
 namespace Magefox\SSOIntegration\Controller\Auth0;
 
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\Api\DataObjectHelper;
 use Magento\Framework\Data\Form\FormKey\Validator;
-use Magefox\SSOIntegration\Model\Auth0;
+use Magefox\SSOIntegration\Model\Auth0\ApiFactory;
+use Magento\Store\Model\StoreManagerInterface;
 use Magento\Customer\Model\CustomerFactory;
-use Magento\Customer\Model\CustomerExtractor;
+use Magento\Customer\Api\Data\CustomerInterfaceFactory;
 use Magento\Customer\Api\AccountManagementInterface;
 use Magento\Customer\Model\Session;
-use Firebase\JWT\JWT;
 
 class Callback extends \Magento\Framework\App\Action\Action
 {
+    /**
+     * @var DataObjectHelper
+     */
+    protected $dataObjectHelper;
+
     /**
      * @var Validator
      */
@@ -20,14 +26,22 @@ class Callback extends \Magento\Framework\App\Action\Action
     /**
      * @var Auth0
      */
-    protected $auth0;
+    protected $apiFactory;
 
+    /**
+     * @var StoreManagerInterface
+     */
+    private $storeManager;
+
+    /**
+     * @var CustomerFactory
+     */
     protected $customerFactory;
 
     /**
-     * @var \Magento\Customer\Model\CustomerExtractor
+     * @var CustomerInterfaceFactory
      */
-    protected $customerExtractor;
+    protected $customerDataFactory;
 
     /**
      * @var \Magento\Customer\Api\AccountManagementInterface
@@ -41,19 +55,24 @@ class Callback extends \Magento\Framework\App\Action\Action
 
     public function __construct(
         Context $context,
+        DataObjectHelper $dataObjectHelper,
         Validator $formValidator,
-        Auth0 $auth0,
+        ApiFactory $apiFactory,
+        StoreManagerInterface $storeManager,
         CustomerFactory $customerFactory,
-        CustomerExtractor $customerExtractor,
+        CustomerInterfaceFactory $customerDataFactory,
         AccountManagementInterface $accountManagement,
         Session $customerSession
     ) {
-        $this->auth0 = $auth0;
+        $this->dataObjectHelper = $dataObjectHelper;
+        $this->apiFactory = $apiFactory;
+        $this->storeManager = $storeManager;
         $this->customerFactory = $customerFactory;
+        $this->customerDataFactory = $customerDataFactory;
         $this->formValidator = $formValidator;
-        $this->customerExtractor = $customerExtractor;
         $this->accountManagement = $accountManagement;
         $this->customerSession = $customerSession;
+
         parent::__construct($context);
     }
 
@@ -76,45 +95,53 @@ class Callback extends \Magento\Framework\App\Action\Action
          */
         if ($this->formValidator->validate($this->getRequest())) {
             try {
-                $token = $this->auth0->getToken($this->getRequest()->getParam('code'));
-                if (isset($token['access_token']) || isset($token['id_token'])) {
-                    $decodedToken = JWT::decode(
-                        $token['id_token'],
-                        $this->auth0->getJWTKey(),
-                        Auth0::ALGORITHM
+                /**
+                 * @var $api \Magefox\SSOIntegration\Model\Auth0\Api
+                 */
+                $api = $this->apiFactory->create();
+                $user = $api->getUser($this->getRequest()->getParam('code'));
+
+                /**
+                 * @var $customer \Magento\Customer\Model\Customer
+                 */
+                $customer = $this->customerFactory
+                    ->create()
+                    ->setWebsiteId($this->storeManager->getStore()->getWebsiteId())
+                    ->loadByEmail($user['email']);
+
+                /**
+                 * Customer register
+                 */
+                if (!$customer->getId()) {
+                    $customer = $this->customerDataFactory->create();
+                    $this->dataObjectHelper->populateWithArray(
+                        $customer,
+                        [
+                            'firstname'             => $user['user_metadata']['firstname'],
+                            'lastname'              => $user['user_metadata']['lastname'],
+                            'email'                 => $user['email']
+                        ],
+                        \Magento\Customer\Api\Data\CustomerInterface::class
                     );
 
-                    $user = $this->auth0->getUserInfo($token['access_token']);
+                    $customer = $this->accountManagement
+                        ->createAccount($customer, $user['user_id'], '');
 
-                    $customer = $this->customerFactory
-                        ->create()
-                        ->loadByEmail($user['email']);
+                    $this->_eventManager->dispatch(
+                        'customer_register_success',
+                        ['account_controller' => $this, 'customer' => $customer]
+                    );
+                }
 
-                    /**
-                     * Customer register
-                     */
-                    if (!$customer->getId()) {
-                        $customer = $this->customerExtractor->extract('customer_account_create', $this->getRequest());
-
-                        $customer = $this->accountManagement
-                            ->createAccount($customer, '', '');
-
-                        $this->_eventManager->dispatch(
-                            'customer_register_success',
-                            ['account_controller' => $this, 'customer' => $customer]
-                        );
-                    }
-
-                    /**
-                     * Process login
-                     */
-                    if (!$user['email_verified']) {
-                        $this->messageManager->addWarningMessage(__('You must confirm your account. Please check your email for the confirmation link.'));
-                        $this->_redirect('/');
-                        return;
-                    } else {
-                        $this->customerSession->loginById($customer->getId());
-                    }
+                /**
+                 * Process login
+                 */
+                if (!$user['email_verified']) {
+                    $this->messageManager->addWarningMessage(__('You must confirm your account. Please check your email for the confirmation link.'));
+                    $this->_redirect('/');
+                    return;
+                } else {
+                    $this->customerSession->loginById($customer->getId());
                 }
 
                 $this->messageManager->addSuccessMessage(__('Login successful.'));

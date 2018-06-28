@@ -8,9 +8,11 @@ define([
 
     $.widget('magefox.auth0', {
         options: {
+            "container": false,
             "clientId": '',
             "domain": '',
             "state": '',
+            "logo": '',
             "redirectUrl": ''
         },
 
@@ -19,6 +21,37 @@ define([
                 this.options.clientId,
                 this.options.domain,
                 {
+                    container: this.options.container === false ? '' : this.options.container,
+                    theme: {
+                        logo: this.options.logo
+                    },
+                    additionalSignUpFields: [
+                        {
+                            name: "firstname",
+                            placeholder: $.mage.__("First Name"),
+                            validator: function(firstname) {
+                                return {
+                                    valid: firstname.length > 0,
+                                    hint: $.mage.__("This is a required field.")
+                                };
+                            }
+                        },
+                        {
+                            name: "lastname",
+                            placeholder: $.mage.__("Last Name"),
+                            validator: function(firstname) {
+                                return {
+                                    valid: firstname.length > 0,
+                                    hint: $.mage.__("This is a required field.")
+                                };
+                            }
+                        },
+                        {
+                            name: "newsletter",
+                            type: "checkbox",
+                            placeholder: $.mage.__("Sign Up for Newsletter")
+                        }
+                    ],
                     auth: {
                         redirectUrl: this.options.redirectUrl,
                         responseType: 'code',

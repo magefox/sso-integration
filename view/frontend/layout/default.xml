@@ -1,12 +1,10 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceBlock name="authorization-link-login">
-            <action method="setTemplate">
-                <argument name="template" xsi:type="helper" helper="Magefox\SSOIntegration\Helper\View::getAuthorizationLinkTemplate" />
-            </action>
+        <referenceBlock name="authorization-link-login" remove="true"/>
+        <referenceBlock name="header.links">
+            <block name="auth0.login.link" class="Magefox\SSOIntegration\Block\Auth0" template="Magefox_SSOIntegration::auth0/link/login.phtml"/>
         </referenceBlock>
-
         <!--<referenceBlock name="top.links">-->
             <!--<block ifconfig="sso_integration/general/active" class="Magento\Customer\Block\Account\RegisterLink" name="register-link">-->
                 <!--<arguments>-->
