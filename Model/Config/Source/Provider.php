@@ -11,7 +11,8 @@ class Provider implements \Magento\Framework\Option\ArrayInterface
     public function toOptionArray()
     {
         return [
-            'auth0' => __('Auth0')
+            'auth0' => __('Auth0'),
+            'saml2' => __('SAML2 (Coming soon)')
         ];
     }
 }

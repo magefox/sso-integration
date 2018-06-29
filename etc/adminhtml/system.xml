@@ -55,7 +55,7 @@
                 </field>
                 <field id="auth0_client_signing_algorithm" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Client Signing Algorithm</label>
-                    <source_model>Magefox\SSOIntegration\Model\Config\Source\Algorithm</source_model>
+                    <source_model>Magefox\SSOIntegration\Model\Config\Source\Auth0\Algorithm</source_model>
                 </field>
             </group>
         </section>
