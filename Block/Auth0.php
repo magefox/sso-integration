@@ -26,6 +26,8 @@ class Auth0 extends \Magento\Framework\View\Element\Template
     }
 
     /**
+     * Get auth0 configurations
+     *
      * @return \Magefox\SSOIntegration\Model\Auth0\Config
      */
     public function getConfig() {

@@ -1,11 +1,7 @@
 <?php
-namespace Magefox\SSOIntegration\Block\Account;
+namespace Magefox\SSOIntegration\Block\Auth0\Dashboard;
 
-/**
- * Class AuthorizationLink
- * @package Magefox\SSOIntegration\Block\Account
- */
-class AuthorizationLink extends \Magento\Customer\Block\Account\AuthorizationLink
+class Info extends \Magento\Customer\Block\Account\Dashboard\Info
 {
     /**
      * @var \Magefox\SSOIntegration\Model\Auth0\Config
@@ -19,9 +15,9 @@ class AuthorizationLink extends \Magento\Customer\Block\Account\AuthorizationLin
 
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Framework\App\Http\Context $httpContext,
-        \Magento\Customer\Model\Url $customerUrl,
-        \Magento\Framework\Data\Helper\PostHelper $postDataHelper,
+        \Magento\Customer\Helper\Session\CurrentCustomer $currentCustomer,
+        \Magento\Newsletter\Model\SubscriberFactory $subscriberFactory,
+        \Magento\Customer\Helper\View $helperView,
         \Magefox\SSOIntegration\Model\Auth0\Config $config,
         \Magento\Framework\Data\Form\FormKey $formKey,
         array $data = []
@@ -29,10 +25,12 @@ class AuthorizationLink extends \Magento\Customer\Block\Account\AuthorizationLin
         $this->config = $config;
         $this->formKey = $formKey;
 
-        parent::__construct($context, $httpContext, $customerUrl, $postDataHelper, $data);
+        parent::__construct($context, $currentCustomer, $subscriberFactory, $helperView, $data);
     }
 
     /**
+     * Get auth0 configurations
+     *
      * @return \Magefox\SSOIntegration\Model\Auth0\Config
      */
     public function getConfig() {

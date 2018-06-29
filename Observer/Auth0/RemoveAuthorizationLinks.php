@@ -35,6 +35,7 @@ class RemoveAuthorizationLinks implements ObserverInterface
         );
         $loginLink = $layout->getBlock('authorization-link-login');
         $registerLink = $layout->getBlock('register-link');
+        $accountInformationLink = $layout->getBlock('customer-account-navigation-account-edit-link');
 
         if ($loginLink && $active) {
             $layout->unsetElement('authorization-link-login');
@@ -42,6 +43,10 @@ class RemoveAuthorizationLinks implements ObserverInterface
 
         if ($registerLink && $active) {
             $layout->unsetElement('register-link');
+        }
+
+        if($accountInformationLink && $accountInformationLink) {
+            $layout->unsetElement('customer-account-navigation-account-edit-link');
         }
     }
 }

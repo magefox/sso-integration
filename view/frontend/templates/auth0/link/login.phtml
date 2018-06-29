@@ -4,18 +4,18 @@
  * @var $block \Magefox\SSOIntegration\Block\Auth0
  */
 ?>
-<li class="authorization-link"
-    data-mage-init='{
-        "magefox.auth0": {
-            "clientId": "<?= $block->getConfig()->getClientId()?>",
-            "domain": "<?= $block->getConfig()->getDomain()?>",
-            "state": "<?= $block->getFormKey()?>",
-            "logo": "<?= $block->getLogoSrc()?>",
-            "redirectUrl": "<?= $block->getConfig()->getCallbackUrl()?>"
-        }
-    }'
->
-    <a href="javascript:void">
+<li class="authorization-link">
+    <a href="javascript:void(0)"
+        data-mage-init='{
+            "magefox.auth0": {
+                "clientId": "<?= $block->getConfig()->getClientId()?>",
+                "domain": "<?= $block->getConfig()->getDomain()?>",
+                "state": "<?= $block->getFormKey()?>",
+                "logo": "<?= $block->getLogoSrc()?>",
+                "redirectUrl": "<?= $block->getConfig()->getCallbackUrl()?>"
+            }
+        }'
+    >
         <?= __('Login or Register') ?>
     </a>
 </li>

@@ -4,5 +4,15 @@
         <referenceBlock name="header.links">
             <block ifconfig="sso_integration/general/active" name="auth0.login.link" class="Magefox\SSOIntegration\Block\Auth0" template="Magefox_SSOIntegration::auth0/link/login.phtml"/>
         </referenceBlock>
+        <!--<referenceBlock name="authorization-link-login">-->
+            <!--<action method="setTemplate">-->
+                <!--<argument name="template" xsi:type="helper" helper="Magefox\SSOIntegration\Helper\View::getAuthorizationLinkTemplate" />-->
+            <!--</action>-->
+        <!--</referenceBlock>-->
+        <referenceBlock name="customer_account_dashboard_info">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Magefox_SSOIntegration::auth0/dashboard/info.phtml</argument>
+            </action>
+        </referenceBlock>
     </body>
 </page>

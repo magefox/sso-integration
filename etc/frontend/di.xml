@@ -2,4 +2,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Magento\Customer\Controller\Account\Login" type="Magefox\SSOIntegration\Controller\Auth0\Login" />
     <preference for="Magento\Customer\Controller\Account\Create" type="Magefox\SSOIntegration\Controller\Auth0\Register" />
+    <preference for="Magento\Customer\Controller\Account\Edit" type="Magefox\SSOIntegration\Controller\Auth0\Edit" />
+    <preference for="Magento\Customer\Controller\Account\ForgotPassword" type="Magefox\SSOIntegration\Controller\Auth0\ForgotPassword" />
+    <preference for="Magento\Customer\Block\Account\Dashboard\Info" type="Magefox\SSOIntegration\Block\Auth0\Dashboard\Info" />
 </config>

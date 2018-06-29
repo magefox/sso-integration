@@ -8,12 +8,14 @@ define([
 
     $.widget('magefox.auth0', {
         options: {
-            "container": false,
             "clientId": '',
             "domain": '',
             "state": '',
             "logo": '',
-            "redirectUrl": ''
+            "redirectUrl": '',
+            "allowLogin": true,
+            "allowSignUp": true,
+            "allowForgotPassword": true
         },
 
         _create: function () {
@@ -21,7 +23,6 @@ define([
                 this.options.clientId,
                 this.options.domain,
                 {
-                    container: this.options.container === false ? '' : this.options.container,
                     theme: {
                         logo: this.options.logo
                     },
@@ -45,11 +46,6 @@ define([
                                     hint: $.mage.__("This is a required field.")
                                 };
                             }
-                        },
-                        {
-                            name: "newsletter",
-                            type: "checkbox",
-                            placeholder: $.mage.__("Sign Up for Newsletter")
                         }
                     ],
                     auth: {
@@ -60,11 +56,14 @@ define([
                             scope: 'openid' // Learn about scopes: https://auth0.com/docs/scopes
                             // scope: 'openid profile email' // Learn about scopes: https://auth0.com/docs/scopes
                         }
-                    }
+                    },
+                    allowLogin: this.options.allowLogin,
+                    allowSignUp: this.options.allowSignUp,
+                    allowForgotPassword: this.options.allowForgotPassword
                 })
             ;
 
-            $(this.element).find('a').click(function (e) {
+            $(this.element).click(function (e) {
                 e.preventDefault();
                 this.lock.show();
             }.bind(this));
