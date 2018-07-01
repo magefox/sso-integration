@@ -2,7 +2,7 @@
 [![Build Status](https://img.shields.io/travis/magefox/sso-integration.svg?style=flat)](https://travis-ci.org/magefox/sso-integration)
 [![Latest Stable Version](https://poser.pugx.org/magefox/sso-integration/v/stable)](https://packagist.org/packages/magefox/sso-integration)
 [![Total Downloads](https://poser.pugx.org/magefox/sso-integration/downloads)](https://packagist.org/packages/magefox/sso-integration)
-[![Software License](https://img.shields.io/badge/license-GPL-green.svg?style=flat)](http://opensource.org/licenses/gpl-2.0.php)
+[![Software License](https://img.shields.io/badge/license-GPL-green.svg?style=flat)](http://opensource.org/licenses/gpl-2.0.php) [![Join the chat at https://gitter.im/magefox/sso-integration](https://badges.gitter.im/magefox/sso-integration.svg)](https://gitter.im/magefox/sso-integration?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 ## Description
 Single Sign On (SSO) Integrations which includes [Auth0](https://auth0.com), SAML2 protocol(Coming Soon) enable the use of external services for single sign-on.
 <!--- [Try Demo](http://demo.magefox.com) --->
