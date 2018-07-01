@@ -9,7 +9,7 @@ Single Sign On (SSO) Integrations which includes [Auth0](https://auth0.com), SAM
 
 ## Features
 - 100% open source.
-- Easily switch On/Off the SAML Module.
+- Easily switch On/Off the Module.
 - Supports Single Sign On (IdP and SP initiated)
 - Supports Magento Multi-stores.
 - Supported 3 party services: [Auth0](https://auth0.com), SAML2 Protocol (Coming soon)
