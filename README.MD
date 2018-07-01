@@ -1,4 +1,5 @@
 # Magento 2 SSO Integration
+[![Join the chat at https://gitter.im/magefox/sso-integration](https://badges.gitter.im/magefox/sso-integration.svg)](https://gitter.im/magefox/sso-integration?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://img.shields.io/travis/magefox/sso-integration.svg?style=flat)](https://travis-ci.org/magefox/sso-integration)
 [![Latest Stable Version](https://poser.pugx.org/magefox/sso-integration/v/stable)](https://packagist.org/packages/magefox/sso-integration)
 [![Total Downloads](https://poser.pugx.org/magefox/sso-integration/downloads)](https://packagist.org/packages/magefox/sso-integration)
