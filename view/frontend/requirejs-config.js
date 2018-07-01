@@ -1,3 +1,10 @@
+/******************************************************
+ * @package Magento 2 SSO Integration
+ * @author http://www.magefox.com
+ * @copyright (C) 2018- Magefox.Com
+ * @license PHP files are GNU/GPL
+ *******************************************************/
+
 var config = {
     paths: {
         'auth0Lock': 'Magefox_SSOIntegration/js/libs/auth0-lock.min'

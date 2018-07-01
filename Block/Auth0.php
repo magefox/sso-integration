@@ -1,4 +1,11 @@
 <?php
+/******************************************************
+ * @package Magento 2 SSO Integration
+ * @author http://www.magefox.com
+ * @copyright (C) 2018- Magefox.Com
+ * @license PHP files are GNU/GPL
+ *******************************************************/
+
 namespace Magefox\SSOIntegration\Block;
 
 class Auth0 extends \Magento\Framework\View\Element\Template
@@ -30,7 +37,8 @@ class Auth0 extends \Magento\Framework\View\Element\Template
      *
      * @return \Magefox\SSOIntegration\Model\Auth0\Config
      */
-    public function getConfig() {
+    public function getConfig()
+    {
         return $this->config;
     }
 
@@ -39,7 +47,8 @@ class Auth0 extends \Magento\Framework\View\Element\Template
      *
      * @return string
      */
-    public function getFormKey() {
+    public function getFormKey()
+    {
         return $this->formKey->getFormKey();
     }
 
@@ -49,7 +58,8 @@ class Auth0 extends \Magento\Framework\View\Element\Template
      * @return string
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function getLogoSrc() {
+    public function getLogoSrc()
+    {
         return $this->getLayout()->getBlock('logo')->getLogoSrc();
     }
 }

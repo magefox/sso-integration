@@ -1,11 +1,19 @@
 <?xml version="1.0"?>
+<!--
+/******************************************************
+ * @package Magento 2 SSO Integration
+ * @author http://www.magefox.com
+ * @copyright (C) 2018- Magefox.Com
+ * @license PHP files are GNU/GPL
+ *******************************************************/
+-->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <type name="Magefox\SSOIntegration\Logger\Handler">
         <arguments>
             <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
         </arguments>
     </type>
-    <type name="Magefox\SSOIntegration\Logger\Logger">
+    <type name="Magento\Framework\Logger\Monolog">
         <arguments>
             <argument name="name" xsi:type="string">SSOIntegrationLogger</argument>
             <argument name="handlers"  xsi:type="array">

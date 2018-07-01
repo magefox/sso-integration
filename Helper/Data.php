@@ -1,7 +1,15 @@
 <?php
+/******************************************************
+ * @package Magento 2 SSO Integration
+ * @author http://www.magefox.com
+ * @copyright (C) 2018- Magefox.Com
+ * @license PHP files are GNU/GPL
+ *******************************************************/
+
 namespace Magefox\SSOIntegration\Helper;
 
 use Magento\Framework\App\Helper\Context;
+use Magento\Store\Model\ScopeInterface;
 
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
@@ -24,7 +32,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @return bool
      */
-    public function isActive() {
-        return (bool) $this->scopeConfig->getValue('sso_integration/general/active', \Magento\Store\Model\ScopeInterface::SCOPE_WEBSITE);
+    public function isActive()
+    {
+        return (bool) $this->scopeConfig->getValue('sso_integration/general/active', ScopeInterface::SCOPE_WEBSITE);
     }
 }

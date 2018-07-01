@@ -1,4 +1,11 @@
 <?php
+/******************************************************
+ * @package Magento 2 SSO Integration
+ * @author http://www.magefox.com
+ * @copyright (C) 2018- Magefox.Com
+ * @license PHP files are GNU/GPL
+ *******************************************************/
+
 namespace Magefox\SSOIntegration\Controller\Auth0;
 
 use Magento\Framework\App\Action\Context;
@@ -31,7 +38,7 @@ class Callback extends \Magento\Framework\App\Action\Action
     /**
      * @var StoreManagerInterface
      */
-    private $storeManager;
+    protected $storeManager;
 
     /**
      * @var CustomerFactory
@@ -117,9 +124,9 @@ class Callback extends \Magento\Framework\App\Action\Action
                     $this->dataObjectHelper->populateWithArray(
                         $customer,
                         [
-                            'firstname'             => $user['user_metadata']['firstname'],
-                            'lastname'              => $user['user_metadata']['lastname'],
-                            'email'                 => $user['email']
+                            'firstname' => $user['user_metadata']['firstname'],
+                            'lastname' => $user['user_metadata']['lastname'],
+                            'email' => $user['email']
                         ],
                         \Magento\Customer\Api\Data\CustomerInterface::class
                     );
@@ -137,7 +144,9 @@ class Callback extends \Magento\Framework\App\Action\Action
                  * Process login
                  */
                 if (!$user['email_verified']) {
-                    $this->messageManager->addWarningMessage(__('You must confirm your account. Please check your email for the confirmation link.'));
+                    $this->messageManager->addWarningMessage(
+                        __('You must confirm your account. Please check your email for the confirmation link.')
+                    );
                     $this->_redirect('/');
                     return;
                 } else {

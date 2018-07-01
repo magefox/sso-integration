@@ -1,4 +1,11 @@
 <?php
+/******************************************************
+ * @package Magento 2 SSO Integration
+ * @author http://www.magefox.com
+ * @copyright (C) 2018- Magefox.Com
+ * @license PHP files are GNU/GPL
+ *******************************************************/
+
 namespace Magefox\SSOIntegration\Console\Command;
 
 use Symfony\Component\Console\Command\Command;
@@ -19,6 +26,13 @@ class Auth0Sync extends Command
     protected $appState;
 
     /**
+     * @var \Symfony\Component\Console\Question\ConfirmationQuestionFactory
+     */
+    protected $confirmationQuestionFactory;
+
+    protected $progressBarFactory;
+
+    /**
      * @var CollectionFactory
      */
     protected $customerCollectionFactory;
@@ -35,11 +49,15 @@ class Auth0Sync extends Command
 
     public function __construct(
         State $appState,
+        \Symfony\Component\Console\Question\ConfirmationQuestionFactory $confirmationQuestionFactory,
+        \Symfony\Component\Console\Helper\ProgressBarFactory $progressBarFactory,
         CollectionFactory $customerCollectionFactory,
         \Magento\Customer\Model\CustomerRegistry $customerRegistry,
         ApiFactory $apiFactory
     ) {
         $this->appState = $appState;
+        $this->confirmationQuestionFactory = $confirmationQuestionFactory;
+        $this->progressBarFactory = $progressBarFactory;
         $this->customerCollectionFactory = $customerCollectionFactory;
         $this->customerRegistry = $customerRegistry;
         $this->apiFactory = $apiFactory;
@@ -52,9 +70,7 @@ class Auth0Sync extends Command
      */
     protected function configure()
     {
-        $this->setName(self::COMMAND)
-            ->setDescription('Sync magento users to Auth0.')
-        ;
+        $this->setName(self::COMMAND)->setDescription('Sync magento users to Auth0.');
 
         parent::configure();
     }
@@ -70,20 +86,34 @@ class Auth0Sync extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $helper = $this->getHelper('question');
-        $question = new \Symfony\Component\Console\Question\ConfirmationQuestion('<info>Sync customers to Auth0, Your customers will have to change password manually. Are you sure? (Yes/No):</info> ', false);
-        if(!$helper->ask($input, $output, $question))
-            return;
+        $question = $this->confirmationQuestionFactory->create([
+            'question'  => '<info>' .
+                    'Sync customers to Auth0, Your customers will have to change password manually. ' .
+                    'Are you sure? (Yes/No):' .
+                '</info> ',
+            'default'   => false
+        ]);
+
+        if (!$helper->ask($input, $output, $question)) {
+            return null;
+        }
 
         $this->appState->setAreaCode(\Magento\Framework\App\Area::AREA_GLOBAL);
         $output->setDecorated(true);
 
         $customerIds = $this->customerCollectionFactory
             ->create()
-            ->getAllIds()
-        ;
+            ->getAllIds();
 
-        $progress = new \Symfony\Component\Console\Helper\ProgressBar($output, count($customerIds));
-        $progress->setFormat("<comment>Syncing customers to Auth0</comment> %current%/%max% [%bar%] %percent:3s%% %elapsed%\n");
+        $progress = $this->progressBarFactory->create([
+            'output'    => $output,
+            'max'       => count($customerIds)
+        ]);
+
+        $progress->setFormat(
+            "<comment>Syncing customers to Auth0</comment> " .
+            "%current%/%max% [%bar%] %percent:3s%% %elapsed%\n"
+        );
 
         try {
             foreach ($customerIds as $customerId) {
@@ -103,9 +133,11 @@ class Auth0Sync extends Command
                     "connection"        => "Username-Password-Authentication"
                 ];
 
+                /**
+                 * Response 'statusCode' is 409 if "User already exists"
+                 */
                 $this->apiFactory->create()
                     ->createUser($data);
-                // $response['statusCode'] === 409: User already exists
 
                 $progress->advance();
             }

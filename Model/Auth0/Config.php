@@ -1,4 +1,11 @@
 <?php
+/******************************************************
+ * @package Magento 2 SSO Integration
+ * @author http://www.magefox.com
+ * @copyright (C) 2018- Magefox.Com
+ * @license PHP files are GNU/GPL
+ *******************************************************/
+
 namespace Magefox\SSOIntegration\Model\Auth0;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -12,6 +19,16 @@ class Config
     const XML_PATH_CLIENT_SECRET = 'sso_integration/general/auth0_client_secret';
     const XML_PATH_CLIENT_SECRET_BASE64_ENCODED = 'sso_integration/general/auth0_client_secret_base64_encoded';
     const XML_PATH_CLIENT_SIGNING_ALGORITHM = 'sso_integration/general/auth0_client_signing_algorithm';
+
+    /**
+     * @var ScopeConfigInterface
+     */
+    protected $scopeConfig;
+
+    /**
+     * @var EncryptorInterface
+     */
+    protected $encryptor;
 
     /**
      * @var string
@@ -29,9 +46,9 @@ class Config
     protected $clientSecret;
 
     /**
-     * @var bool
+     * @var bool|null
      */
-    protected $clientSecretBase64Encoded;
+    protected $clientSecretBase64Encoded = null;
 
     /**
      * @var string
@@ -55,12 +72,9 @@ class Config
         EncryptorInterface $encryptor,
         UrlInterface $urlBuilder
     ) {
+        $this->scopeConfig = $scopeConfig;
+        $this->encryptor = $encryptor;
         $this->urlBuilder = $urlBuilder;
-        $this->domain = "{$scopeConfig->getValue(self::XML_PATH_ACCOUNT)}.auth0.com";
-        $this->clientId = $encryptor->decrypt($scopeConfig->getValue(self::XML_PATH_CLIENT_ID));
-        $this->clientSecret = $encryptor->decrypt($scopeConfig->getValue(self::XML_PATH_CLIENT_SECRET));
-        $this->clientSecretBase64Encoded = boolval($scopeConfig->getValue(self::XML_PATH_CLIENT_SECRET_BASE64_ENCODED));
-        $this->clientSigningAlgorithm = $scopeConfig->getValue(self::XML_PATH_CLIENT_SIGNING_ALGORITHM);
     }
 
     /**
@@ -68,7 +82,12 @@ class Config
      *
      * @return string
      */
-    public function getDomain() {
+    public function getDomain()
+    {
+        if (!$this->domain) {
+            $this->domain = "{$this->scopeConfig->getValue(self::XML_PATH_ACCOUNT)}.auth0.com";
+        }
+
         return $this->domain;
     }
 
@@ -77,7 +96,12 @@ class Config
      *
      * @return string
      */
-    public function getClientId() {
+    public function getClientId()
+    {
+        if (!$this->clientId) {
+            $this->clientId = $this->encryptor->decrypt($this->scopeConfig->getValue(self::XML_PATH_CLIENT_ID));
+        }
+
         return $this->clientId;
     }
 
@@ -86,7 +110,12 @@ class Config
      *
      * @return string
      */
-    public function getClientSecret() {
+    public function getClientSecret()
+    {
+        if (!$this->clientSecret) {
+            $this->clientSecret = $this->encryptor->decrypt($this->scopeConfig->getValue(self::XML_PATH_CLIENT_SECRET));
+        }
+
         return $this->clientSecret;
     }
 
@@ -95,7 +124,8 @@ class Config
      *
      * @return string
      */
-    public function getCallbackUrl() {
+    public function getCallbackUrl()
+    {
         return $this->urlBuilder->getUrl('sso/auth0/callback');
     }
 
@@ -104,16 +134,28 @@ class Config
      *
      * @return bool
      */
-    public function isClientSecretBase64Encoded() {
+    public function isClientSecretBase64Encoded()
+    {
+        if ($this->clientSecretBase64Encoded === null) {
+            $this->clientSecretBase64Encoded = boolval(
+                $this->scopeConfig->getValue(self::XML_PATH_CLIENT_SECRET_BASE64_ENCODED)
+            );
+        }
+
         return $this->clientSecretBase64Encoded;
     }
 
     /**
      * Get client signing Algorithm
      *
-     * @return mixed|string
+     * @return string
      */
-    public function getClientSigningAlgorithm() {
+    public function getClientSigningAlgorithm()
+    {
+        if (!$this->clientSigningAlgorithm) {
+            $this->clientSigningAlgorithm = $this->scopeConfig->getValue(self::XML_PATH_CLIENT_SIGNING_ALGORITHM);
+        }
+
         return $this->clientSigningAlgorithm;
     }
 }

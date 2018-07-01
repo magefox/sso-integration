@@ -1,4 +1,11 @@
 <?php
+/******************************************************
+ * @package Magento 2 SSO Integration
+ * @author http://www.magefox.com
+ * @copyright (C) 2018- Magefox.Com
+ * @license PHP files are GNU/GPL
+ *******************************************************/
+
 namespace Magefox\SSOIntegration\Block\Auth0\Dashboard;
 
 class Info extends \Magento\Customer\Block\Account\Dashboard\Info
@@ -33,7 +40,8 @@ class Info extends \Magento\Customer\Block\Account\Dashboard\Info
      *
      * @return \Magefox\SSOIntegration\Model\Auth0\Config
      */
-    public function getConfig() {
+    public function getConfig()
+    {
         return $this->config;
     }
 
@@ -42,7 +50,8 @@ class Info extends \Magento\Customer\Block\Account\Dashboard\Info
      *
      * @return string
      */
-    public function getFormKey() {
+    public function getFormKey()
+    {
         return $this->formKey->getFormKey();
     }
 
@@ -52,7 +61,8 @@ class Info extends \Magento\Customer\Block\Account\Dashboard\Info
      * @return string
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function getLogoSrc() {
+    public function getLogoSrc()
+    {
         return $this->getLayout()->getBlock('logo')->getLogoSrc();
     }
 }

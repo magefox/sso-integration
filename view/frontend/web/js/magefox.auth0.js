@@ -1,9 +1,16 @@
+/******************************************************
+ * @package Magento 2 SSO Integration
+ * @author http://www.magefox.com
+ * @copyright (C) 2018- Magefox.Com
+ * @license PHP files are GNU/GPL
+ *******************************************************/
+
 define([
     'jquery',
     'auth0Lock',
     'jquery/ui',
     'mage/translate'
-], function($, Auth0Lock) {
+], function ($, Auth0Lock) {
     "use strict";
 
     $.widget('magefox.auth0', {
@@ -30,7 +37,7 @@ define([
                         {
                             name: "firstname",
                             placeholder: $.mage.__("First Name"),
-                            validator: function(firstname) {
+                            validator: function (firstname) {
                                 return {
                                     valid: firstname.length > 0,
                                     hint: $.mage.__("This is a required field.")
@@ -40,7 +47,7 @@ define([
                         {
                             name: "lastname",
                             placeholder: $.mage.__("Last Name"),
-                            validator: function(firstname) {
+                            validator: function (firstname) {
                                 return {
                                     valid: firstname.length > 0,
                                     hint: $.mage.__("This is a required field.")
@@ -54,14 +61,13 @@ define([
                         params: {
                             state: this.options.state,
                             scope: 'openid' // Learn about scopes: https://auth0.com/docs/scopes
-                            // scope: 'openid profile email' // Learn about scopes: https://auth0.com/docs/scopes
                         }
                     },
                     allowLogin: this.options.allowLogin,
                     allowSignUp: this.options.allowSignUp,
                     allowForgotPassword: this.options.allowForgotPassword
-                })
-            ;
+                }
+            );
 
             $(this.element).click(function (e) {
                 e.preventDefault();

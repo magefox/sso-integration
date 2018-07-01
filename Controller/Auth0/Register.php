@@ -1,4 +1,11 @@
 <?php
+/******************************************************
+ * @package Magento 2 SSO Integration
+ * @author http://www.magefox.com
+ * @copyright (C) 2018- Magefox.Com
+ * @license PHP files are GNU/GPL
+ *******************************************************/
+
 namespace Magefox\SSOIntegration\Controller\Auth0;
 
 use Magento\Customer\Model\Session;
@@ -53,7 +60,7 @@ class Register extends \Magento\Customer\Controller\Account\Login
             \Magento\Store\Model\ScopeInterface::SCOPE_WEBSITE
         );
 
-        if($active) {
+        if ($active) {
             $forwarder = $this->resultForwardFactory->create();
             $forwarder->forward('noroute');
 
