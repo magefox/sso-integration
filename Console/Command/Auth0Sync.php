@@ -30,6 +30,9 @@ class Auth0Sync extends Command
      */
     protected $confirmationQuestionFactory;
 
+    /**
+     * @var \Symfony\Component\Console\Helper\ProgressBarFactory
+     */
     protected $progressBarFactory;
 
     /**

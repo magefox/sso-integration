@@ -6,7 +6,7 @@
  * @license PHP files are GNU/GPL
  *******************************************************/
 
-namespace Magefox\SSOIntegration\Model\Config\Source;
+namespace Magefox\SSOIntegration\Model\Config\Source\Auth0;
 
 class Algorithm implements \Magento\Framework\Option\ArrayInterface
 {
