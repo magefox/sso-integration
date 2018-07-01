@@ -1,0 +1,29 @@
+<?php
+/******************************************************
+ * @package Magento 2 SSO Integration
+ * @author http://www.magefox.com
+ * @copyright (C) 2018- Magefox.Com
+ * @license PHP files are GNU/GPL
+ *******************************************************/
+
+// @codingStandardsIgnoreFile
+
+/**
+ * @var $block \Magefox\SSOIntegration\Block\Auth0
+ */
+?>
+<li class="authorization-link">
+    <a href="javascript:void(0)"
+        data-mage-init='{
+            "magefox.auth0": {
+                "clientId": "<?= $block->getConfig()->getClientId()?>",
+                "domain": "<?= $block->getConfig()->getDomain()?>",
+                "state": "<?= $block->getFormKey()?>",
+                "logo": "<?= $block->getLogoSrc()?>",
+                "redirectUrl": "<?= $block->getConfig()->getCallbackUrl()?>"
+            }
+        }'
+    >
+        <?= __('Login or Register') ?>
+    </a>
+</li>

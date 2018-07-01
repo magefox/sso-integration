@@ -1,4 +1,12 @@
 <?xml version="1.0"?>
+<!--
+/******************************************************
+ * @package Magento 2 SSO Integration
+ * @author http://www.magefox.com
+ * @copyright (C) 2018- Magefox.Com
+ * @license PHP files are GNU/GPL
+ *******************************************************/
+-->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
         <tab id="magefox" translate="label" sortOrder="300">
@@ -27,19 +35,35 @@
                         <field id="provider">auth0</field>
                     </depends>
                 </field>
-                <field id="auth0_client_id" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="auth0_client_id" translate="label" type="obscure" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Client ID</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                     <validate>required-entry</validate>
+                    <comment><![CDATA[Application ID, copy from your application's settings in the <a href="https://manage.auth0.com/#/applications" target="_blank">Auth0 dashboard</a>.]]></comment>
                     <depends>
                         <field id="provider">auth0</field>
                     </depends>
                 </field>
-                <field id="auth0_client_secret" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="auth0_client_secret" translate="label" type="obscure" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Client Secret</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                     <validate>required-entry</validate>
+                    <comment><![CDATA[Application secret, copy from your application's settings in the <a href="https://manage.auth0.com/#/applications" target="_blank">Auth0 dashboard</a>.]]></comment>
                     <depends>
                         <field id="provider">auth0</field>
                     </depends>
+                </field>
+                <field id="auth0_client_secret_base64_encoded" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Client Secret Base64 Encoded</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Enable if your client secret is base64 enabled. If you are not sure, check your clients page in Auth0. Displayed below the client secret on that page is the text "The Client Secret is not base64 encoded." when this is not encoded.]]></comment>
+                    <depends>
+                        <field id="provider">auth0</field>
+                    </depends>
+                </field>
+                <field id="auth0_client_signing_algorithm" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Client Signing Algorithm</label>
+                    <source_model>Magefox\SSOIntegration\Model\Config\Source\Auth0\Algorithm</source_model>
                 </field>
             </group>
         </section>

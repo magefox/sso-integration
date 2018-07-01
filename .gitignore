@@ -1,3 +1,5 @@
 .idea
+.docker
 docker-compose.yml
+composer.lock
 vendor
