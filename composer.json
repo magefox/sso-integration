@@ -20,7 +20,8 @@
     "phpmd/phpmd": "@stable",
     "magento/marketplace-eqp": "@stable",
     "squizlabs/php_codesniffer": "@stable",
-    "sebastian/phpcpd": "@stable"
+    "sebastian/phpcpd": "@stable",
+    "satooshi/php-coveralls": "^1.1"
   },
   "authors": [
     {
