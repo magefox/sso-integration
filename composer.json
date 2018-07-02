@@ -3,15 +3,33 @@
   "description": "A Magento 2 SSO Integration module.",
   "type": "magento2-module",
   "version": "1.0.0",
-  "license": [
-    "OSL-3.0",
-    "AFL-3.0"
+  "license": "MIT",
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://repo.magento.com/"
+    }
   ],
   "require": {
     "magento/module-customer": "^101.0",
     "firebase/php-jwt": "^5.0",
     "simplesamlphp/saml2": "^3.1"
   },
+  "require-dev": {
+    "phpmd/phpmd": "@stable",
+    "magento/marketplace-eqp": "dev-master",
+    "squizlabs/php_codesniffer": "@stable"
+  },
+  "authors": [
+    {
+      "name": "Magefox",
+      "email": "magefoxtech@gmail.com"
+    },
+    {
+      "name": "Kend",
+      "email": "vanthinh87@gmail.com"
+    }
+  ],
   "autoload": {
     "files": [ "registration.php" ],
     "psr-4": {
