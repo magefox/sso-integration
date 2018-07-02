@@ -11,9 +11,9 @@ install:
     - composer install --prefer-dist
 
 script:
-    - php vendor/bin/phpcs --standard=PSR2 ./
-    - php vendor/bin/phpmd ./ text cleancode,codesize,controversial,design,naming,unusedcode
-    - php vendor/bin/phpcpd ./
+    - php vendor/bin/phpcs --standard=PSR2 Block/ Console/ Controller/ Helper/ Logger/ Model/ Observer/
+    - php vendor/bin/phpmd Block/,Console/,Controller/,Helper/,Logger/,Model/,Observer/ text cleancode,codesize,controversial,design,naming,unusedcode
+    - php vendor/bin/phpcpd Block/ Console/ Controller/ Helper/ Logger/ Model/ Observer/
     - php vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 
 after_script:
