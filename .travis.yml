@@ -19,11 +19,11 @@ cache:
         - $HOME/.composer/cache
 
 install:
+    - wget https://gist.githubusercontent.com/cdiacon/457f0e09fb936e5cc859/raw/a9d46ee07b550b9a742a3cb418c28b5d49b1753b/auth.json
     - sh -c "if [ '$TEST_SUITE' = 'unit' ]; then composer install --prefer-dist; fi"
     - sh -c "if [ '$TEST_SUITE' = 'static' ]; then npm install; fi"
 
 script:
-    - wget https://gist.githubusercontent.com/cdiacon/457f0e09fb936e5cc859/raw/a9d46ee07b550b9a742a3cb418c28b5d49b1753b/auth.json
     - sh -c "if [ '$TEST_SUITE' = 'unit' ]; then php vendor/bin/phpdoc run -d Block,Helper,Model,Observer -t build/doc; fi"
     - sh -c "if [ '$TEST_SUITE' = 'unit' ]; then php vendor/bin/phpcs; fi"
     - sh -c "if [ '$TEST_SUITE' = 'unit' ]; then php vendor/bin/phpmd Block/,Helper/,Model/,Observer/,Test/ text cleancode,codesize,controversial,design,naming,unusedcode; fi"
