@@ -11,7 +11,7 @@ install:
     - composer install --prefer-dist
 
 script:
-    - php vendor/bin/phpcs --standard=MEQP2 ./
+    - php vendor/bin/phpcs --standard=PSR2 ./
     - php vendor/bin/phpmd ./ text cleancode,codesize,controversial,design,naming,unusedcode
     - php vendor/bin/phpcpd ./
     - php vendor/bin/phpunit --coverage-clover build/logs/clover.xml
